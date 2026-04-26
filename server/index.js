@@ -30,7 +30,7 @@ const videoSchema = new mongoose.Schema({
 const Video = mongoose.model('Video', videoSchema);
 
 // ── Middleware ────────────────────────────────────────────────
-app.use(cors({ origin: true, credentials: true }));
+app.use(cors({ origin: function(origin, callback) { callback(null, true); }, credentials: true }));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
