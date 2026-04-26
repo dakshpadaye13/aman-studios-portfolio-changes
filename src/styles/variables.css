@@ -1,0 +1,21 @@
+:root {
+  /* Colors */
+  --bg-dark: #050505;
+  --bg-light: #0A0A0A;
+  --surface: #111111;
+  --border: #1E1E1E;
+  --accent-1: #C8F135; /* neon yellow-green */
+  --accent-2: #00F5D4; /* cyan */
+  --text-primary: #F0F0F0;
+  --text-muted: #888888;
+
+  /* Typography */
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-heading: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+
+  /* Screen sizes (for media queries in CSS or JS) */
+  --desktop: 1440px;
+  --tablet: 768px;
+  --mobile: 390px;
+}

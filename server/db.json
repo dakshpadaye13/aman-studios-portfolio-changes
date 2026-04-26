@@ -1,0 +1,24 @@
+{
+  "videos": [
+    {
+      "id": "1777151804148",
+      "title": "lakhme fashion",
+      "category": "Showreel",
+      "description": "",
+      "youtubeUrl": "",
+      "videoPath": "/uploads/videos/1777151804080-580977.mp4",
+      "thumbnailPath": "",
+      "createdAt": "2026-04-25T21:16:44.148Z"
+    },
+    {
+      "id": "1777149387546",
+      "title": "lakme",
+      "category": "Showreel",
+      "description": "",
+      "youtubeUrl": "",
+      "videoPath": "/uploads/videos/1777149386701-794125.mp4",
+      "thumbnailPath": "",
+      "createdAt": "2026-04-25T20:36:27.546Z"
+    }
+  ]
+}
