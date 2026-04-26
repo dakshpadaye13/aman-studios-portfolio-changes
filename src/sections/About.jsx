@@ -4,8 +4,6 @@ const About = () => {
   const skills = [
     'Premiere Pro',
     'After Effects',
-    'DaVinci Resolve',
-    'Final Cut Pro',
     'Color Grading',
     'Motion Graphics',
     'Sound Design',
@@ -29,7 +27,7 @@ const About = () => {
             <img
               src="/aman.photo.png"
               alt="Aman Sharma — Video Editor"
-              className="absolute inset-0 w-full h-full object-cover object-top"
+              className="absolute inset-0 w-full h-full object-cover object-bottom"
             />
             {/* Subtle neon gradient overlay for cinematic feel */}
             <div
