@@ -115,7 +115,8 @@ app.post('/api/videos', authMiddleware, upload.fields([
     await newVideo.save();
     res.status(201).json({ ...newVideo.toObject(), id: newVideo._id.toString() });
   } catch (err) {
-    res.status(500).json({ error: 'Server error' });
+    console.error('POST Error:', err);
+    res.status(500).json({ error: 'Server error', details: err.message });
   }
 });
 
@@ -139,17 +140,57 @@ app.patch('/api/videos/:id', authMiddleware, upload.fields([
     await existing.save();
     res.json({ ...existing.toObject(), id: existing._id.toString() });
   } catch (err) {
-    res.status(500).json({ error: 'Server error' });
+    console.error('PATCH Error:', err);
+    res.status(500).json({ error: 'Server error', details: err.message });
   }
 });
 
 // DELETE
 app.delete('/api/videos/:id', authMiddleware, async (req, res) => {
   try {
+    const video = await Video.findById(req.params.id);
+    if (!video) return res.status(404).json({ error: 'Not found' });
+
+    // Helper to extract Cloudinary public ID from URL
+    const extractPublicId = (url) => {
+      if (!url) return null;
+      try {
+        const parts = url.split('/');
+        const uploadIndex = parts.indexOf('upload');
+        if (uploadIndex === -1) return null;
+        let publicIdParts = parts.slice(uploadIndex + 1);
+        if (publicIdParts.length > 0 && publicIdParts[0].startsWith('v') && !isNaN(publicIdParts[0].substring(1))) {
+          publicIdParts.shift(); // remove version
+        }
+        const publicIdWithExt = publicIdParts.join('/');
+        const lastDotIndex = publicIdWithExt.lastIndexOf('.');
+        return lastDotIndex !== -1 ? publicIdWithExt.substring(0, lastDotIndex) : publicIdWithExt;
+      } catch (err) {
+        return null;
+      }
+    };
+
+    // Delete video file from Cloudinary
+    if (video.videoPath && video.videoPath.includes('cloudinary')) {
+      const videoPublicId = extractPublicId(video.videoPath);
+      if (videoPublicId) {
+        await cloudinary.uploader.destroy(videoPublicId, { resource_type: 'video' });
+      }
+    }
+
+    // Delete thumbnail image from Cloudinary
+    if (video.thumbnailPath && video.thumbnailPath.includes('cloudinary')) {
+      const thumbPublicId = extractPublicId(video.thumbnailPath);
+      if (thumbPublicId) {
+        await cloudinary.uploader.destroy(thumbPublicId, { resource_type: 'image' });
+      }
+    }
+
     await Video.findByIdAndDelete(req.params.id);
     res.json({ ok: true });
   } catch (err) {
-    res.status(500).json({ error: 'Server error' });
+    console.error('DELETE Error:', err);
+    res.status(500).json({ error: 'Server error', details: err.message });
   }
 });
 
